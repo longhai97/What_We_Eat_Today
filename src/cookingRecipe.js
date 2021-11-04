@@ -1,55 +1,71 @@
-import React, { useState } from "react";
-import axios               from "axios";
-import { Loading }         from "./loading";
+import React, { useEffect, useState } from "react";
+import axios                          from "axios";
+import { Loading }                    from "./loading";
 
 const CookingRecipe = () => {
 
     const [ typeOfFood, setTypeOfFood ] = useState([]);
     const [ indexOfResponse ]           = useState(0);
-    const [ loading, setLoading ]       = useState(false)
-    const handleRandomMeal              = () => {
-        const dataOfMeal = async () => {
-            await axios.get('https://www.themealdb.com/api/json/v1/1/random.php')
-                .then((res) => {
-                    setTypeOfFood(res.data.meals[indexOfResponse])
-                    setLoading(true)
-                })
-        }
-        return dataOfMeal
+    const [ loading, setLoading ]       = useState(true);
+
+    const handleRandomMeal = () => {
+        axios.get('https://www.themealdb.com/api/json/v1/1/random.php')
+            .then((res) => {
+                setLoading(false)
+                setTimeout(() => {
+                    const dataResult = res.data.meals[indexOfResponse]
+                    setTypeOfFood(dataResult)
+                    if (dataResult) {
+                        setLoading(true)
+                    }
+                }, 500)
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
-    const renderElement = () => {
-        if (loading) {
-            return <div>
-                <ul>
-                    <li>
-                        <img style={ { width: "300px" } } src={ typeOfFood.strMealThumb } alt={ typeOfFood.strTags }/>
-                    </li>
-                    <li>
-                        { `Name of Meal: ${ typeOfFood.strMeal || '' } ` }
-                    </li>
-                    <li>
-                        { `Area:${ typeOfFood.strArea || '' }` }
-                    </li>
-                    <li>
-                        Video about it: { <a href={ typeOfFood.strYoutube }>Check</a> }
-                    </li>
-                </ul>
-            </div>
-        } else {
-            return null;
-        }
-    }
+    useEffect(() => {
+        handleRandomMeal()
+    }, []);
 
 
     return (
         <div>
-            <h1> Cooking Recipe</h1>
-            <div className={'skeleton'}>
+            <h1> Cooking Recipe </h1>
+            { loading === false
+                ?
                 <Loading/>
-            </div>
-            { renderElement() }
-            <button onClick={ handleRandomMeal() }>Get Meal</button>
+                :
+                <div>
+                    <ul>
+                        <li>
+                            <img style={ { width: "300px" } } src={ typeOfFood.strMealThumb }
+                                 alt={ typeOfFood.strTags }/>
+                        </li>
+                        <li>
+                            { `Name: ${ typeOfFood.strMeal || '' } ` }
+                        </li>
+                        <li>
+                            { `Tag: ${ typeOfFood.strTags || '😎 Comming soon 😎' } ` }
+                        </li>
+                        <li>
+                            { `Area: ${ typeOfFood.strArea || '' }` }
+                        </li>
+                        <li>
+                            { 'Video about: ' }
+                            {
+                                <a href={ typeOfFood.strYoutube }>{ typeOfFood.strYoutube ? 'Check it ' : '' }</a>
+                            }
+                        </li>
+                        <li>
+                            { `Instructions: ${ typeOfFood.strInstructions || '' } ` }
+                        </li>
+                    </ul>
+                </div> }
+
+            <button onClick={ handleRandomMeal }>Get Some New Stuff</button>
         </div>
     )
 

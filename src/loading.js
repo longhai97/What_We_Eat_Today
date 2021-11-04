@@ -4,12 +4,10 @@ import { ShimmerBadge, ShimmerThumbnail, ShimmerTitle, } from "react-shimmer-eff
 
 export const Loading = (props) => {
     return (
-        <div>
-            <ShimmerThumbnail height={ 300 } width={ 500 } className="m-0" rounded/>
+        <div className={"skeleton"}>
+            <ShimmerThumbnail height={ 200 } width={ 200 } className="m-0" rounded/>
             <ShimmerBadge width={ 200 }/>
             <ShimmerBadge width={ 200 }/>
-            <ShimmerBadge width={ 200 }/>
-            <ShimmerTitle/>
         </div>
     );
 };
