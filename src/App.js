@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState } from "react";
+import CookingRecipe       from "./cookingRecipe";
 
 const defaultMenu = [
     "Bún Cá",
@@ -53,6 +54,8 @@ function App() {
                 { nameForToday }
                 <button style={ { margin: '10px' } } onClick={ handleRandomName }>Take a random for today</button>
             </div>
+
+            <CookingRecipe/>
         </div>
     );
 }
