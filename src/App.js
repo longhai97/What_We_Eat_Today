@@ -1,11 +1,16 @@
 import './App.css';
 import React, { useState } from "react";
 
+const defaultMenu = [
+    "Bún Cá",
+    "Bánh Đa Trộn",
+    "Phở Bò",
+    "Cơm Rang Thập Cẩm"
+]
 function App() {
-
     const [ name, setName ]   = useState('');
     const [ names, setNames ] = useState(() => {
-        const storageNames = JSON.parse(localStorage.getItem('names')) ?? [];
+        const storageNames = JSON.parse(localStorage.getItem('names')) ?? defaultMenu;
         return storageNames
     });
 
