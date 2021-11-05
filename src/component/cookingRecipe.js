@@ -39,9 +39,9 @@ const CookingRecipe = () => {
                 <Loading/>
                 :
                 <div>
-                    <ul>
+                    <ul className={ "detail-information" }>
                         <li>
-                            <img style={ { width: "300px" } } src={ typeOfFood.strMealThumb }
+                            <img className={ "img-thumb" } src={ typeOfFood.strMealThumb }
                                  alt={ typeOfFood.strTags }/>
                         </li>
                         <li>
@@ -60,7 +60,9 @@ const CookingRecipe = () => {
                             }
                         </li>
                         <li>
-                            { `Instructions: ${ typeOfFood.strInstructions || '' } ` }
+                            <p>
+                                { `Instructions: ${ typeOfFood.strInstructions || '' } ` }
+                            </p>
                         </li>
                     </ul>
                 </div> }
@@ -70,4 +72,4 @@ const CookingRecipe = () => {
     )
 
 }
-export default CookingRecipe
+export default CookingRecipe;

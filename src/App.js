@@ -1,63 +1,43 @@
 import './App.css';
-import React, { useState } from "react";
-import CookingRecipe       from "./cookingRecipe";
+import React         from "react";
+import CookingRecipe from "./component/cookingRecipe";
+import MenuToday     from "./component/menuToday";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Link
+}                    from "react-router-dom";
+import { Home }      from "./component/home";
 
-const defaultMenu = [
-    "Bún Cá",
-    "Bánh Đa Trộn",
-    "Phở Bò",
-    "Cơm Rang Thập Cẩm"
-]
+
 function App() {
-    const [ name, setName ]   = useState('');
-    const [ names, setNames ] = useState(() => {
-        const storageNames = JSON.parse(localStorage.getItem('names')) ?? defaultMenu;
-        return storageNames
-    });
-
-    const [ nameForToday, setNameForToday ] = useState('Take a Random');
-
-    const handleSubmit = () => {
-        setNames(prev => {
-            const newMeal    = [ ...prev, name ]
-            const jobsToJson = JSON.stringify(newMeal)
-            localStorage.setItem('names', jobsToJson)
-            return newMeal
-        })
-        setName('')
-    }
-
-    const handleRandomName = () => {
-        const index = Math.floor(Math.random() * names.length);
-        setNameForToday(names[index])
-
-    }
-
     return (
         <div className="App">
-            <h1>Menu for lunch :</h1>
+            <Router>
+                <Switch>
+                    <Route exact path="/">
+                        <Home/>
+                    </Route>
+                    <Route exact path="/random-meal">
+                        <MenuToday/>
+                    </Route>
+                    <Route path="/recipe">
+                        <CookingRecipe/>
+                    </Route>
+                </Switch>
 
-            <ul>
-                { names.map((name, index) => (
-                    <li key={ index }>{ name }</li>
-                )) }
-            </ul>
-
-            <input
-                value={ name }
-                onChange={ e => setName(e.target.value) }
-            />
-
-            <button style={ { margin: '10px' } } onClick={ handleSubmit }>Add new Food</button>
-
-            <div>
-                { nameForToday }
-                <button style={ { margin: '10px' } } onClick={ handleRandomName }>Take a random for today</button>
-            </div>
-
-            <CookingRecipe/>
+                <ul>
+                    <li>
+                        <Link to="/random-meal">Random Meals</Link>
+                    </li>
+                    <li>
+                        <Link to="/recipe">Cooking Recipe</Link>
+                    </li>
+                </ul>
+            </Router>
         </div>
-    );
+    )
 }
 
 export default App;
